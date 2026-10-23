@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Integrated Digital Fleet GPS Tracking System login">
+  <title>Sign in | FleetTrack</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="brand-panel" aria-labelledby="brand-title">
+      <div class="brand-mark" aria-hidden="true">FT</div>
+      <p class="eyebrow">INTEGRATED DIGITAL FLEET</p>
+      <h1 id="brand-title">Fleet GPS<br>Tracking System</h1>
+      <p class="brand-copy">A central workspace for vehicle monitoring, driver management, deliveries and GPS location updates.</p>
+      <div class="status-note"><span class="status-dot" aria-hidden="true"></span><span>Secure access portal</span></div>
+    </section>
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login-heading">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h2 id="login-title">Sign in to your account</h2>
+        <p class="muted">Enter your account details to continue.</p>
+      </div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="username" placeholder="name@example.com" required>
+          <small class="field-error" id="email-error"></small>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+          <small class="field-error" id="password-error"></small>
+        </div>
+        <div class="form-options">
+          <label class="remember-option"><input id="remember" type="checkbox"> <span>Remember email on this device</span></label>
+          <button class="text-button" id="toggle-password" type="button" aria-pressed="false">Show password</button>
+        </div>
+        <div id="form-message" class="form-message" role="alert" aria-live="polite"></div>
+        <button class="primary-button" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+      <div class="security-note"><span class="lock-icon" aria-hidden="true">▣</span><p>Access is restricted to authorized users. Your role determines which system features you can use.</p></div>
+      <footer class="login-footer">
+        <span>Integrated Digital Fleet GPS Tracking System</span>
+        <span>Prototype interface · Authentication backend to be connected</span>
+      </footer>
+    </section>
+  </main>
+  <script src="js/login.js"></script>
+</body>
+</html>

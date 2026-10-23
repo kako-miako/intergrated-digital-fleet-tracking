@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{color-scheme:light;--ink:#171717;--muted:#6b7280;--line:#dedede;--paper:#fff;--focus:#454545}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#ededed;color:var(--ink);font-family:'DM Sans',Arial,sans-serif}
+button,input{font:inherit}
+.page-shell{min-height:100vh;display:grid;grid-template-columns:minmax(280px,.92fr) minmax(360px,1.08fr);max-width:1240px;margin:0 auto;background:var(--paper);box-shadow:0 18px 60px rgba(0,0,0,.08)}
+.brand-panel{background:#171717;color:#fff;padding:clamp(32px,5vw,68px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;position:relative;overflow:hidden}
+.brand-panel:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-180px;bottom:-100px;box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 75px rgba(255,255,255,.02);pointer-events:none}
+.brand-mark{width:54px;height:54px;border:1px solid #777;display:grid;place-items:center;font:800 17px Manrope,sans-serif;letter-spacing:-1px;margin-bottom:48px}
+.eyebrow{margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:2px}
+.brand-panel .eyebrow{color:#bdbdbd}
+h1,h2{font-family:Manrope,Arial,sans-serif}
+h1{margin:0;font-size:clamp(32px,4vw,49px);line-height:1.12;letter-spacing:-1.8px}
+.brand-copy{max-width:360px;color:#c6c6c6;line-height:1.75;margin:24px 0 32px;font-size:14px}
+.status-note{display:flex;align-items:center;gap:10px;font-size:12px;color:#ddd}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block}
+.login-panel{padding:clamp(28px,5vw,72px);display:flex;flex-direction:column;justify-content:center;min-width:0}
+.login-heading{margin-bottom:34px}
+.login-heading .eyebrow{color:#666}
+h2{font-size:clamp(25px,3vw,32px);letter-spacing:-1px;line-height:1.2;margin:0 0 12px}
+.muted{margin:0;color:var(--muted);font-size:14px}
+.field{margin-bottom:21px}
+label{display:block;font-weight:600;font-size:13px;margin-bottom:9px}
+input[type=email],input[type=password],input[type=text]{width:100%;min-height:49px;border:1px solid #d4d4d4;border-radius:5px;padding:0 14px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:#9a9a9a}
+input:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
+input[aria-invalid=true]{border-color:#9a2f2f}
+.form-options{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 22px}
+.remember-option{display:flex;align-items:center;gap:8px;margin:0;font-size:12px;font-weight:400;color:#555}
+.remember-option input{accent-color:#171717}
+.text-button{border:0;background:transparent;padding:4px 0;color:#333;font-size:12px;text-decoration:underline;cursor:pointer}
+.primary-button{width:100%;min-height:50px;border:1px solid #171717;border-radius:5px;background:#171717;color:#fff;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px}
+.primary-button:hover{background:#333}
+.primary-button:focus-visible,.text-button:focus-visible{outline:3px solid #888;outline-offset:3px}
+.field-error{display:block;min-height:0;margin-top:6px;color:#9a2f2f;font-size:12px}
+.form-message{display:none;margin:0 0 15px;padding:11px 12px;border:1px solid #d5d5d5;background:#f5f5f5;color:#333;font-size:13px;line-height:1.5;border-radius:4px}
+.form-message.visible{display:block}
+.security-note{display:flex;gap:11px;border-top:1px solid #e5e5e5;padding-top:20px;margin-top:28px;color:#666}
+.lock-icon{color:#222;font-size:16px;line-height:1.2}
+.security-note p{font-size:12px;line-height:1.6;margin:0}
+.login-footer{display:flex;flex-direction:column;gap:5px;margin-top:34px;color:#888;font-size:10px;line-height:1.5}
+@media(max-width:760px){.page-shell{grid-template-columns:1fr}.brand-panel{padding:28px;min-height:240px}.brand-mark{margin-bottom:24px}.brand-panel h1{font-size:34px}.brand-copy{margin:14px 0 18px}.brand-panel:after{right:-220px;bottom:-250px}.login-panel{padding:34px 28px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
