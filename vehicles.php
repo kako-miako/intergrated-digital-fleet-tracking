@@ -89,101 +89,242 @@ function escapeHtml($value) {
     <link rel="stylesheet" href="css/style.css">
 
     <style>
+<style>
+    body {
+        margin: 0;
+        padding: 25px 25px 25px 265px;
+        background: #edf2f8;
+        color: #172b4d;
+        font-family: 'DM Sans', Arial, sans-serif;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100vh;
+        padding: 20px 10px;
+        background: linear-gradient(180deg, #10243e, #173d68);
+        color: white;
+        box-sizing: border-box;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .sidebar nav a,
+    .sidebar .logout-link {
+        display: block;
+        color: #dce7f5;
+        text-decoration: none;
+        padding: 13px 12px;
+        border-radius: 7px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar .logout-link:hover {
+        background: #28547c;
+        color: white;
+    }
+
+    .sidebar .logout-link {
+        margin-top: 25px;
+        background: #8b2525;
+    }
+
+.container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+    .container > h1 {
+        color: #10243e;
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .container > p {
+        color: #64748b;
+        margin-bottom: 25px;
+    }
+
+    .panel {
+        background: #ffffff;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(16,36,62,.06);
+    }
+
+    .panel h2 {
+        color: #173d68;
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        color: #334155;
+    }
+
+    input, select {
+        width: 100%;
+        min-height: 45px;
+        padding: 10px 12px;
+        box-sizing: border-box;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #172b4d;
+        outline: none;
+    }
+
+    input:focus, select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+        background: white;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 7px;
+        background: #2563eb;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background .2s;
+    }
+
+    button:hover {
+        background: #173da8;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        font-size: 13px;
+    }
+
+    th, td {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 13px 12px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    th {
+        background: #10243e;
+        color: white;
+        font-weight: 600;
+    }
+
+    tbody tr:hover {
+        background: #f1f5f9;
+    }
+
+    .success {
+        color: #166534;
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+        padding: 12px;
+        border-radius: 7px;
+    }
+
+    .error {
+        color: #991b1b;
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        padding: 12px;
+        border-radius: 7px;
+    }
+
+    @media (max-width: 700px) {
         body {
-            font-family: Arial, sans-serif;
-            margin: 25px;
-            background: #f4f4f4;
-            color: #222;
+            padding: 15px;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
         }
 
         .panel {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 18px;
         }
+    }
+/* Fix content being hidden behind the sidebar */
+body {
+    padding-left: 250px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box;
+}
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
+.container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+}
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
+.panel {
+    width: 100%;
+    box-sizing: border-box;
+}
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #bbb;
-            border-radius: 4px;
-        }
+@media (max-width: 700px) {
+    body {
+        padding: 15px !important;
+    }
 
-        button, .back-link {
-            display: inline-block;
-            padding: 10px 16px;
-            margin-top: 15px;
-            border: none;
-            border-radius: 4px;
-            background: #222;
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .table-wrap {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background: #222;
-            color: white;
-        }
-
-        .success {
-            color: #176b2c;
-            background: #e7f6e9;
-            padding: 12px;
-        }
-
-        .error {
-            color: #a00000;
-            background: #fdeaea;
-            padding: 12px;
-        }
-    </style>
+    .sidebar {
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+}
+</style>
 </head>
 
 <body>
+<?php include __DIR__ . '/sidebar.php'; ?>
+
 <div class="container">
 
     <h1>Vehicle Management</h1>
     <p>Register and manage vehicles in your fleet.</p>
 
-    <a class="back-link" href="dashboard.php">Back to Dashboard</a>
-
+    
     <?php if ($message !== ''): ?>
         <p class="<?= escapeHtml($messageType) ?>">
             <?= escapeHtml($message) ?>

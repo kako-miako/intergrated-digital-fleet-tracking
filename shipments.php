@@ -126,27 +126,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $shipmentId
                 ]);
 
-                // Record the status change in the audit log.
-                $log = $pdo->prepare(
-                    "INSERT INTO audit_logs
-                     (user_id, action, details, ip_address)
-                     VALUES (?, ?, ?, ?)"
-                );
+               // Record an audit entry only when the status changes.
+if ($oldStatus !== $status) {
 
-                $details = sprintf(
-                    'Shipment %s (ID %d): status changed from %s to %s.',
-                    $reference,
-                    $shipmentId,
-                    $oldStatus,
-                    $status
-                );
+    $log = $pdo->prepare(
+        "INSERT INTO audit_logs
+         (user_id, action, details, ip_address)
+         VALUES (?, ?, ?, ?)"
+    );
 
-                $log->execute([
-                    $_SESSION['user_id'],
-                    'SHIPMENT STATUS UPDATED',
-                    $details,
-                    $_SERVER['REMOTE_ADDR'] ?? null
-                ]);
+    $details = sprintf(
+        'Shipment %s (ID %d): status changed from %s to %s.',
+        $reference,
+        $shipmentId,
+        $oldStatus,
+        $status
+    );
+
+    $log->execute([
+        $_SESSION['user_id'],
+        'SHIPMENT STATUS UPDATED',
+        $details,
+        $_SERVER['REMOTE_ADDR'] ?? null
+    ]);
+}
 
                 $pdo->commit();
                 $message = 'Shipment updated and audit log recorded.';
@@ -191,96 +194,221 @@ $shipments = $pdo->query(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shipment and Delivery Monitoring</title>
+    <title>Shipment and Delivery Monitoring</title><style>
+    * {
+        box-sizing: border-box;
+    }
 
-    <style>
+    body {
+        font-family: 'DM Sans', Arial, sans-serif;
+        margin: 0;
+        padding: 25px 20px 25px 250px;
+        color: #172b4d;
+        background: #edf2f8;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100vh;
+        padding: 20px 10px;
+        background: linear-gradient(180deg, #10243e, #173d68);
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .sidebar nav a,
+    .sidebar .logout-link {
+        display: block;
+        color: #dce7f5;
+        text-decoration: none;
+        padding: 13px 12px;
+        border-radius: 7px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar .logout-link:hover {
+        background: #28547c;
+        color: white;
+    }
+
+    .sidebar .logout-link {
+        margin-top: 25px;
+        background: #8b2525;
+    }
+
+    .page-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    h1 {
+        color: #10243e;
+        font-size: 28px;
+        margin: 0 0 10px;
+    }
+
+    h2 {
+        color: #173d68;
+        font-size: 20px;
+        margin-top: 0;
+    }
+
+    .page-content > p {
+        color: #64748b;
+        margin-bottom: 25px;
+    }
+
+    .panel {
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(16, 36, 62, 0.06);
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        color: #334155;
+    }
+
+    input, select {
+        display: block;
+        width: 100%;
+        min-height: 43px;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #172b4d;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    button {
+        padding: 12px 18px;
+        margin-top: 18px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #173da8;
+    }
+
+    .success, .error {
+        padding: 12px 15px;
+        border-radius: 7px;
+        margin-bottom: 15px;
+    }
+
+    .success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        background: white;
+        border-radius: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 850px;
+        background: white;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        background: #10243e;
+        color: white;
+    }
+
+    tbody tr:hover {
+        background: #f1f5f9;
+    }
+
+    .update-form {
+        min-width: 190px;
+    }
+
+    .update-form button {
+        width: 100%;
+    }
+
+    @media (max-width: 700px) {
         body {
-            font-family: Arial, sans-serif;
-            margin: 24px;
-            color: #222;
+            padding: 15px;
         }
 
-        h1, h2 {
-            margin-bottom: 12px;
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
         }
 
         .panel {
-            border: 1px solid #ccc;
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 24px;
+            padding: 18px;
         }
-
-        label {
-            display: block;
-            margin-top: 12px;
-        }
-
-        input, select, button {
-            padding: 9px;
-            margin-top: 5px;
-            max-width: 100%;
-        }
-
-        input, select {
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .success {
-            background: #e8f5e9;
-            padding: 10px;
-        }
-
-        .error {
-            background: #ffebee;
-            padding: 10px;
-        }
-
-        .table-wrap {
-            overflow-x: auto;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            min-width: 850px;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 9px;
-            text-align: left;
-        }
-
-        th {
-            background: #eee;
-        }
-
-        .update-form {
-            min-width: 190px;
-        }
-
-        .update-form button {
-            width: 100%;
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
 
-<h1>Shipment and Delivery Monitoring</h1>
+<?php include __DIR__ . '/sidebar.php'; ?>
+<main class="page-content">
 
+
+<h1>Shipment and Delivery Monitoring</h1>
 <p>
     Register shipments, assign vehicles, track delivery status,
     and record proof of delivery.
 </p>
 
-<p><a href="dashboard.php">Back to Dashboard</a></p>
 
 <?php if ($message !== ''): ?>
     <p class="success">
@@ -467,7 +595,7 @@ $shipments = $pdo->query(
         </table>
     </div>
 </section>
-
+</main>
 </body>
 </html>
 

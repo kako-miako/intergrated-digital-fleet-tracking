@@ -1,5 +1,9 @@
 <?php
-session_start();
+session_start([
+    'cookie_httponly' => true,
+    'cookie_samesite' => 'Lax',
+    'use_strict_mode' => true
+]);
 
 require __DIR__ . '/db.php';
 

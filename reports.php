@@ -89,24 +89,216 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Fleet Reports</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
-        .panel { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
-        label { display: inline-block; margin: 8px 10px 8px 0; }
-        input, select, button { padding: 9px; margin-top: 5px; }
-        button, .button { cursor: pointer; }
-        .button { display: inline-block; padding: 10px 14px; border: 1px solid #777; text-decoration: none; color: #222; border-radius: 4px; }
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 750px; }
-        th, td { border: 1px solid #ccc; padding: 9px; text-align: left; }
-        th { background: #eee; }
-    </style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'DM Sans', Arial, sans-serif;
+        margin: 0;
+        padding: 25px 20px 25px 250px;
+        color: #172b4d;
+        background: #edf2f8;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100vh;
+        padding: 20px 10px;
+        background: linear-gradient(180deg, #10243e, #173d68);
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .sidebar nav a,
+    .sidebar .logout-link {
+        display: block;
+        color: #dce7f5;
+        text-decoration: none;
+        padding: 13px 12px;
+        border-radius: 7px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar .logout-link:hover {
+        background: #28547c;
+        color: white;
+    }
+
+    .sidebar .logout-link {
+        margin-top: 25px;
+        background: #8b2525;
+    }
+
+    .page-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    h1 {
+        color: #10243e;
+        font-size: 28px;
+        margin: 0 0 10px;
+    }
+
+    h2 {
+        color: #173d68;
+        font-size: 20px;
+        margin-top: 0;
+    }
+
+    .page-content > p {
+        color: #64748b;
+        margin-bottom: 25px;
+    }
+
+    .panel {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(16, 36, 62, 0.06);
+    }
+
+    label {
+        display: inline-block;
+        margin: 8px 15px 12px 0;
+        font-weight: 600;
+        font-size: 13px;
+        color: #334155;
+    }
+
+    input, select {
+        min-height: 43px;
+        padding: 10px 12px;
+        margin-top: 7px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #172b4d;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    button, .button {
+        display: inline-block;
+        padding: 12px 18px;
+        margin-top: 10px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    button:hover, .button:hover {
+        background: #173da8;
+        color: white;
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        background: white;
+        border-radius: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 750px;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+    }
+
+    th {
+        background: #10243e;
+        color: white;
+    }
+
+    tbody tr:hover {
+        background: #f1f5f9;
+    }
+
+    @media print {
+        body {
+            padding: 0;
+            background: white;
+        }
+
+        .sidebar,
+        .panel:first-of-type,
+        .button,
+        button {
+            display: none !important;
+        }
+
+        .panel {
+            box-shadow: none;
+            border: none;
+        }
+
+        table {
+            min-width: 0;
+            font-size: 10px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        body {
+            padding: 15px;
+        }
+
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            padding: 18px;
+        }
+
+        input, select {
+            max-width: 100%;
+        }
+    }
+</style>
 </head>
 <body>
 
-<h1>Fleet Reports</h1>
-<p>View shipment and delivery records, filter reports, and export results.</p>
+<?php include __DIR__ . '/sidebar.php'; ?>
+<main class="page-content">
 
-<p><a href="dashboard.php">Back to Dashboard</a></p>
+
+<h1>Fleet Reports</h1><p>View shipment and delivery records, filter reports, and export results.</p>
+
 
 <section class="panel">
     <h2>Filter Report</h2>
@@ -193,7 +385,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         </table>
     </div>
 </section>
-
+</main>
 </body>
 </html>
 

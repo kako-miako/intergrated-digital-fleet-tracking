@@ -43,19 +43,198 @@ $latestLocations = $locationStmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GPS Tracker</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 15px; }
-        label, select, button { display: block; width: 100%; margin-top: 12px; box-sizing: border-box; }
-        select, button { padding: 12px; }
-        button { cursor: pointer; }
-        #result { margin-top: 20px; padding: 12px; background: #f1f1f1; }
-    </style>
+   <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'DM Sans', Arial, sans-serif;
+        margin: 0;
+        padding: 25px 20px 25px 250px;
+        background: #edf2f8;
+        color: #172b4d;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100vh;
+        padding: 20px 10px;
+        background: linear-gradient(180deg, #10243e, #173d68);
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .sidebar nav a,
+    .sidebar .logout-link {
+        display: block;
+        color: #dce7f5;
+        text-decoration: none;
+        padding: 13px 12px;
+        border-radius: 7px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar .logout-link:hover {
+        background: #28547c;
+        color: white;
+    }
+
+    .sidebar .logout-link {
+        margin-top: 25px;
+        background: #8b2525;
+    }
+
+    .page-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    h1 {
+        color: #10243e;
+        font-size: 28px;
+        margin: 0 0 20px;
+    }
+
+    h2 {
+        color: #173d68;
+        font-size: 20px;
+        margin: 25px 0 15px;
+    }
+
+    #map {
+        height: 430px;
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+    #mapStatus {
+        color: #475569;
+        font-size: 14px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    th {
+        background: #10243e;
+        color: white;
+    }
+
+    label {
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    select {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        background: white;
+    }
+
+    button {
+        padding: 12px 20px;
+        margin: 15px 10px 0 0;
+        border: none;
+        border-radius: 7px;
+        background: #2563eb;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #173da8;
+    }
+
+    button:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+    }
+
+    #stop {
+        background: #b42318;
+    }
+
+    #stop:hover:not(:disabled) {
+        background: #8f1d15;
+    }
+
+    #result {
+        margin-top: 20px;
+        padding: 15px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #173d68;
+    }
+
+    @media (max-width: 700px) {
+        body {
+            padding: 15px;
+        }
+
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            height: 320px;
+        }
+
+        .page-content {
+            width: 100%;
+        }
+    }
+</style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 </head>
 <body>
-    <h1>Real GPS Tracker</h1>
+
+<?php include __DIR__ . '/sidebar.php'; ?>
+<main class="page-content">
+
+<h1>Real GPS Tracker</h1>
 <h2>Live Vehicle Map</h2>
 
 <div id="map" style="height: 400px; width: 100%; border: 1px solid #ccc; border-radius: 8px;"></div>
@@ -114,6 +293,7 @@ $latestLocations = $locationStmt->fetchAll();
     <button id="stop" disabled>Stop GPS Tracking</button>
 
     <div id="result" role="status" aria-live="polite">
+</main>
         GPS tracking has not started.
     </div>
 
